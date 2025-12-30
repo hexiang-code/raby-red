@@ -116,46 +116,46 @@ onMounted(async () => {
 <style lang="scss" scoped>
 .dashboard {
   min-height: 100vh;
+}
 
-  &__header {
-    background-color: var(--el-bg-color, #ffffff);
-    border-bottom: 1px solid var(--el-border-color-light, #e4e7ed);
-    padding: 0 var(--el-padding-mini, 4px);
-  }
+.dashboard__header {
+  background-color: var(--el-bg-color, #ffffff);
+  border-bottom: 1px solid var(--el-border-color-light, #e4e7ed);
+  padding: 0 var(--el-padding-small, 8px);
+}
 
-  &__header-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 100%;
-  }
+.dashboard__header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+}
 
-  &__title {
-    margin: 0;
-    font-size: var(--el-font-size-extra-large, 20px);
-    font-weight: 600;
-    color: var(--el-text-color-primary, #303133);
-  }
+.dashboard__title {
+  margin: 0;
+  font-size: var(--el-font-size-extra-large, 20px);
+  font-weight: 600;
+  color: var(--el-text-color-primary, #303133);
+}
 
-  &__header-actions {
-    display: flex;
-    align-items: center;
-    gap: var(--el-padding-small, 12px);
-  }
+.dashboard__header-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--el-padding-small, 12px);
+}
 
-  &__switch-label {
-    font-size: var(--el-font-size-base, 14px);
-    color: var(--el-text-color-regular, #606266);
-  }
+.dashboard__switch-label {
+  font-size: var(--el-font-size-base, 14px);
+  color: var(--el-text-color-regular, #606266);
+}
 
-  &__main {
-    padding: var(--el-padding-mini, 4px);
-    background-color: var(--el-bg-color-page, #f2f3f5);
-  }
+.dashboard__main {
+  padding: var(--el-padding-mini, 4px);
+  background-color: var(--el-bg-color-page, #f2f3f5);
+}
 
-  &__rules-section {
-    margin-top: var(--el-padding-mini, 4px);
-  }
+.dashboard__rules-section {
+  margin-top: var(--el-padding-mini, 4px);
 }
 
 .dashboard-container {

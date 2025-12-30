@@ -173,36 +173,36 @@ onUnmounted(() => {
 <style lang="scss" scoped>
 .proxy-status {
   margin-bottom: var(--el-padding-mini, 4px);
+}
 
-  &__header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
+.proxy-status__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
-  &__title {
-    font-weight: 600;
-  }
+.proxy-status__title {
+  font-weight: 600;
+}
 
-  &__actions {
-    display: flex;
-    align-items: center;
-    gap: var(--el-padding-mini, 4px);
-  }
+.proxy-status__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--el-padding-mini, 4px);
+}
 
-  &__switch-group {
-    display: flex;
-    align-items: center;
-    gap: var(--el-padding-small, 12px);
-  }
+.proxy-status__switch-group {
+  display: flex;
+  align-items: center;
+  gap: var(--el-padding-small, 12px);
+}
 
-  &__switch-label {
-    font-size: var(--el-font-size-base, 14px);
-    color: var(--el-text-color-regular, #606266);
-  }
+.proxy-status__switch-label {
+  font-size: var(--el-font-size-base, 14px);
+  color: var(--el-text-color-regular, #606266);
+}
 
-  &__content {
-    padding: var(--el-padding-small, 12px) 0;
-  }
+.proxy-status__content {
+  padding: var(--el-padding-small, 12px) 0;
 }
 </style>

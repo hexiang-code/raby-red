@@ -15,7 +15,11 @@ export default defineNuxtConfig({
   // Element Plus 样式已通过 @element-plus/nuxt 模块自动导入
   app: {
     baseURL: '/raby-red/',
-    buildAssetsDir: 'assets',
+  },
+  router: {
+    options: {
+      strict: false,
+    },
   },
   runtimeConfig: {
     public: {
