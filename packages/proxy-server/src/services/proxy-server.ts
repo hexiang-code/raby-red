@@ -123,10 +123,46 @@ export class ProxyServer {
           this.status.running = false
           this.statsCollector.stop()
           logger.info('Proxy server stopped')
+
+          // 尝试关闭系统代理
+          void this.disableSystemProxy().catch(err => {
+            logger.warn('Failed to disable system proxy', {
+              error: err instanceof Error ? err.message : 'Unknown error',
+            })
+          })
+
           resolve()
         }
       })
     })
+  }
+
+  /**
+   * 关闭系统代理
+   */
+  private async disableSystemProxy(): Promise<void> {
+    try {
+      const adminServerUrl = this.ruleClient['adminServerUrl']
+      const response = await fetch(`${adminServerUrl}/api/system-proxy/disable`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+
+      if (!response.ok) {
+        throw new Error(`Failed to disable system proxy: ${response.statusText}`)
+      }
+
+      const result = (await response.json()) as { success: boolean }
+      if (result.success) {
+        logger.info('System proxy disabled successfully')
+      }
+    } catch (error) {
+      logger.warn('Failed to disable system proxy via admin server', {
+        error: error instanceof Error ? error.message : 'Unknown error',
+      })
+    }
   }
 
   /**
