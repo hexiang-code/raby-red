@@ -1,0 +1,41 @@
+{
+  "name": "raby-red",
+  "version": "1.0.0",
+  "description": "RabyRed - A system-level HTTP proxy tool",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "pnpm --filter admin-server dev",
+    "build": "pnpm --filter admin-server build",
+    "lint": "pnpm --recursive lint",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
+    "type-check": "pnpm --recursive type-check",
+    "admin:dev": "pnpm --filter admin-server dev",
+    "proxy:dev": "pnpm --filter proxy-server dev"
+  },
+  "keywords": [
+    "proxy",
+    "http-proxy",
+    "system-proxy"
+  ],
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@typescript-eslint/eslint-plugin": "^8.0.0",
+    "@typescript-eslint/parser": "^8.0.0",
+    "eslint": "^9.15.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.5.4",
+    "prettier": "^3.2.5",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "winston": "^3.19.0"
+  }
+}

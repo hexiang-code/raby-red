@@ -1,0 +1,11 @@
+{
+  "name": "@raby-red/client",
+  "version": "1.0.0",
+  "description": "RabyRed Electron client (future)",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "echo 'Client package not implemented yet'",
+    "build": "echo 'Client package not implemented yet'"
+  }
+}
