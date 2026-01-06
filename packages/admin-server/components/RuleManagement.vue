@@ -21,8 +21,11 @@
           <el-switch v-model="row.enabled" :loading="row.loading" @change="handleRuleToggle(row)" />
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="150">
+      <el-table-column label="操作" width="200">
         <template #default="{ row }">
+          <el-button type="success" link size="small" @click="handleTestRule(row)">
+            测试
+          </el-button>
           <el-button type="primary" link size="small" @click="handleEditRule(row)">
             编辑
           </el-button>
@@ -81,6 +84,70 @@
       </template>
     </el-dialog>
 
+    <!-- 测试规则对话框 -->
+    <el-dialog v-model="showTestDialog" title="测试规则" width="600px">
+      <div v-if="testingRule" class="test-dialog">
+        <div class="test-info">
+          <div class="test-info-item">
+            <span class="test-label">源地址规则：</span>
+            <el-tag>{{ testingRule.source }}</el-tag>
+          </div>
+          <div class="test-info-item">
+            <span class="test-label">目标地址：</span>
+            <el-tag type="success">{{ testingRule.target }}</el-tag>
+          </div>
+        </div>
+
+        <el-divider />
+
+        <el-form label-width="80px">
+          <el-form-item label="测试URL">
+            <el-input
+              v-model="testUrl"
+              placeholder="请输入要测试的URL，例如：http://172.29.249.176:8001/api/users"
+              clearable
+              @keyup.enter="performTest"
+            />
+          </el-form-item>
+        </el-form>
+
+        <div v-if="testResult" class="test-result">
+          <el-alert
+            :title="testResult.matched ? '✓ 匹配成功' : '✗ 未匹配'"
+            :type="testResult.matched ? 'success' : 'warning'"
+            :closable="false"
+          >
+            <template v-if="testResult.matched">
+              <div class="result-content">
+                <div class="result-item">
+                  <span class="result-label">原始地址：</span>
+                  <code class="result-value">{{ testResult.originalUrl }}</code>
+                </div>
+                <div class="result-item">
+                  <span class="result-label">代理后地址：</span>
+                  <code class="result-value success">{{ testResult.proxiedUrl }}</code>
+                </div>
+                <div v-if="testResult.matchedPattern" class="result-item">
+                  <span class="result-label">匹配部分：</span>
+                  <code class="result-value">{{ testResult.matchedPattern }}</code>
+                </div>
+              </div>
+            </template>
+            <template v-else>
+              <p class="result-message">
+                该 URL 不匹配当前规则的正则表达式。请检查源地址规则是否正确。
+              </p>
+            </template>
+          </el-alert>
+        </div>
+      </div>
+
+      <template #footer>
+        <el-button @click="showTestDialog = false">关闭</el-button>
+        <el-button type="primary" :disabled="!testUrl" @click="performTest"> 测试 </el-button>
+      </template>
+    </el-dialog>
+
     <!-- 隐藏的文件输入 -->
     <input
       ref="fileInputRef"
@@ -120,6 +187,17 @@ const ruleForm = ref({
   target: '',
   enabled: true,
 })
+
+// 测试相关
+const showTestDialog = ref(false)
+const testingRule = ref<ProxyRule | null>(null)
+const testUrl = ref('')
+const testResult = ref<{
+  matched: boolean
+  originalUrl: string
+  proxiedUrl?: string
+  matchedPattern?: string
+} | null>(null)
 
 const apiBase = config.public.apiBase as string
 
@@ -222,6 +300,73 @@ async function handleRuleToggle(rule: ProxyRule): Promise<void> {
     console.error(error)
   } finally {
     rule.loading = false
+  }
+}
+
+function handleTestRule(rule: ProxyRule): void {
+  testingRule.value = rule
+  testUrl.value = ''
+  testResult.value = null
+  showTestDialog.value = true
+}
+
+function performTest(): void {
+  if (!testUrl.value || !testingRule.value) {
+    return
+  }
+
+  const url = testUrl.value.trim()
+  const sourcePattern = testingRule.value.source
+  const targetUrl = testingRule.value.target
+
+  try {
+    // 将源地址规则转换为正则表达式
+    const regex = new RegExp(sourcePattern)
+    const match = url.match(regex)
+
+    if (match) {
+      // 匹配成功，计算代理后的地址
+      // 提取源地址中的路径部分
+      let proxiedUrl = targetUrl
+
+      // 如果源地址规则中有捕获组，替换到目标地址
+      if (match.length > 1) {
+        // 有捕获组，使用捕获组替换
+        for (let i = 1; i < match.length; i++) {
+          proxiedUrl = proxiedUrl.replace(`$${i}`, match[i])
+        }
+      } else {
+        // 没有捕获组，尝试智能替换
+        // 提取源规则的基础URL部分（去掉正则表达式部分）
+        const sourceBase = sourcePattern.replace(/\.\*/g, '').replace(/\\/g, '')
+
+        // 如果URL完全匹配源规则，直接用目标地址
+        if (url.startsWith(sourceBase)) {
+          const remainingPath = url.substring(sourceBase.length)
+          proxiedUrl = targetUrl + remainingPath
+        }
+      }
+
+      testResult.value = {
+        matched: true,
+        originalUrl: url,
+        proxiedUrl: proxiedUrl,
+        matchedPattern: match[0],
+      }
+
+      ElMessage.success('匹配成功！')
+    } else {
+      // 未匹配
+      testResult.value = {
+        matched: false,
+        originalUrl: url,
+      }
+
+      ElMessage.warning('未匹配到规则')
+    }
+  } catch (error) {
+    ElMessage.error('正则表达式解析失败，请检查源地址规则格式')
+    console.error(error)
   }
 }
 
@@ -411,5 +556,74 @@ onMounted(async () => {
   display: flex;
   align-items: center;
   gap: var(--el-padding-mini, 4px);
+}
+
+.test-dialog {
+  .test-info {
+    background: var(--el-fill-color-light);
+    padding: 12px;
+    border-radius: 4px;
+
+    .test-info-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 8px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      .test-label {
+        font-weight: 500;
+        margin-right: 8px;
+        color: var(--el-text-color-secondary);
+      }
+    }
+  }
+
+  .test-result {
+    margin-top: 16px;
+
+    .result-content {
+      margin-top: 12px;
+
+      .result-item {
+        margin-bottom: 12px;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+
+        .result-label {
+          display: block;
+          font-size: 12px;
+          color: var(--el-text-color-secondary);
+          margin-bottom: 4px;
+        }
+
+        .result-value {
+          display: block;
+          padding: 8px 12px;
+          background: var(--el-fill-color-lighter);
+          border-radius: 4px;
+          font-size: 13px;
+          word-break: break-all;
+          color: var(--el-text-color-primary);
+
+          &.success {
+            background: var(--el-color-success-light-9);
+            color: var(--el-color-success);
+            border: 1px solid var(--el-color-success-light-5);
+          }
+        }
+      }
+    }
+
+    .result-message {
+      margin: 8px 0 0;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+  }
 }
 </style>

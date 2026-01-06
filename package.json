@@ -11,7 +11,12 @@
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
     "type-check": "pnpm --recursive type-check",
     "admin:dev": "pnpm --filter admin-server dev",
-    "proxy:dev": "pnpm --filter proxy-server dev"
+    "proxy:dev": "pnpm --filter proxy-server dev",
+    "client:dev": "pnpm --filter @raby-red/client dev",
+    "client:build": "pnpm --filter @raby-red/client build",
+    "client:dist": "pnpm --filter @raby-red/client dist",
+    "client:dist:mac": "pnpm --filter @raby-red/client dist:mac",
+    "client:dist:win": "pnpm --filter @raby-red/client dist:win"
   },
   "keywords": [
     "proxy",

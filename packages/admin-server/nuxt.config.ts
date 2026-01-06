@@ -36,4 +36,14 @@ export default defineNuxtConfig({
       stylistic: false,
     },
   },
+  // 配置开发服务器（支持 Electron 环境）
+  devServer: {
+    port: parseInt(process.env.PORT || '3000', 10),
+    host: process.env.HOST || '127.0.0.1',
+  },
+  // Nitro 配置
+  nitro: {
+    // 生产环境使用 Node server
+    preset: process.env.NUXT_PRESET || 'node-server',
+  },
 })
