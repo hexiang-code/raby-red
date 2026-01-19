@@ -221,6 +221,9 @@ export class ProcessManager {
       log.info(`Executing: ${command} ${args.join(' ')}`)
       log.info(`Working directory: ${cwd}`)
 
+      // 获取用户数据目录（Electron 标准路径）
+      const userDataDir = app.getPath('userData')
+
       this.adminServerProcess = spawn(command, args, {
         cwd,
         stdio: 'pipe',
@@ -233,6 +236,8 @@ export class ProcessManager {
           PROXY_HOST: this.PROXY_HOST,
           // 关键：让 Electron 以 Node.js 模式运行
           ELECTRON_RUN_AS_NODE: '1',
+          // 传递用户数据目录，用于存储规则数据（避免打包时泄露用户数据）
+          USER_DATA_DIR: userDataDir,
         },
       })
 

@@ -8,7 +8,7 @@
 // Root component
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 #app {
   min-height: 100vh;
   background-color: var(--el-bg-color-page, #f2f3f5);

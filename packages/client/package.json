@@ -55,7 +55,8 @@
         "from": "../../deploy/admin-server",
         "to": "app/admin-server",
         "filter": [
-          "**/*"
+          "**/*",
+          "!data/rules.json"
         ]
       }
     ],

@@ -1,21 +1,53 @@
 import { ruleService } from '~/server/utils/services.js'
+import type { ProxyRule } from '~/server/utils/types.js'
 
 export default defineEventHandler(async event => {
-  const body = await readBody<{ source: string; target: string; enabled?: boolean }>(event)
+  const body = await readBody<{
+    source?: string
+    target?: string
+    enabled?: boolean
+    name?: string
+    type?: 'rule' | 'group'
+    parentId?: string
+  }>(event)
 
-  if (!body.source || !body.target) {
-    throw createError({
-      statusCode: 400,
-      message: 'source and target are required',
-    })
+  const ruleType = body.type || 'rule'
+
+  // 验证规则数据
+  if (ruleType === 'group') {
+    if (!body.name) {
+      throw createError({
+        statusCode: 400,
+        message: 'name is required for group',
+      })
+    }
+  } else {
+    if (!body.source || !body.target) {
+      throw createError({
+        statusCode: 400,
+        message: 'source and target are required for rule',
+      })
+    }
   }
 
   try {
-    const rule = ruleService.addRule({
-      source: body.source,
-      target: body.target,
+    const ruleData: Omit<ProxyRule, 'id' | 'createdAt' | 'updatedAt'> = {
+      type: ruleType,
       enabled: body.enabled ?? true,
-    })
+    }
+
+    if (ruleType === 'group') {
+      ruleData.name = body.name
+    } else {
+      ruleData.source = body.source!
+      ruleData.target = body.target!
+    }
+
+    if (body.parentId) {
+      ruleData.parentId = body.parentId
+    }
+
+    const rule = await ruleService.addRule(ruleData)
 
     return {
       success: true,

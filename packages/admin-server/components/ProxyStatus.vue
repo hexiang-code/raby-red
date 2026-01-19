@@ -24,8 +24,8 @@
           </el-tag>
         </el-descriptions-item>
         <el-descriptions-item label="系统代理">
-          <el-tag :type="systemProxyStatus.enabled ? 'success' : 'info'">
-            {{ systemProxyStatus.enabled ? '已启用' : '已禁用' }}
+          <el-tag :type="systemProxyEnabled ? 'success' : 'info'">
+            {{ systemProxyEnabled ? '已启用' : '已禁用' }}
           </el-tag>
         </el-descriptions-item>
         <el-descriptions-item label="代理地址">
@@ -40,8 +40,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import { ElMessage } from 'element-plus'
+
+defineProps<{
+  systemProxyEnabled: boolean
+}>()
 
 interface ProxyStatus {
   running: boolean
@@ -51,14 +55,6 @@ interface ProxyStatus {
   errorCount: number
 }
 
-interface SystemProxyStatus {
-  enabled: boolean
-  host: string
-  port: number
-}
-
-const config = useRuntimeConfig()
-
 const proxyStatus = ref<ProxyStatus>({
   running: false,
   port: 8080,
@@ -67,49 +63,47 @@ const proxyStatus = ref<ProxyStatus>({
   errorCount: 0,
 })
 
-const systemProxyStatus = ref<SystemProxyStatus>({
-  enabled: false,
-  host: '',
-  port: 0,
-})
-
 const proxyServerRunning = ref(false)
 const proxyServerLoading = ref(false)
 
-let statusInterval: ReturnType<typeof setInterval> | null = null
-
-const apiBase = config.public.apiBase as string
+const { execute: fetchProxyStatusExecute } = useApiRequest<{ success: boolean; data: ProxyStatus }>(
+  '/proxy/status',
+  {
+    immediate: false,
+    onResponse({ response }) {
+      if (response._data?.success && response._data?.data) {
+        proxyStatus.value = response._data.data
+        proxyServerRunning.value = response._data.data.running
+      }
+    },
+  }
+)
 
 async function fetchProxyStatus(): Promise<void> {
-  try {
-    const response = await $fetch<{ success: boolean; data: ProxyStatus }>(
-      `${apiBase}/proxy/status`
-    )
-    if (response.success) {
-      proxyStatus.value = response.data
-      proxyServerRunning.value = response.data.running
-    }
-  } catch (error) {
-    console.error('Failed to fetch proxy status:', error)
-  }
-}
-
-async function fetchSystemProxyStatus(): Promise<void> {
-  try {
-    const response = await $fetch<{ success: boolean; data: SystemProxyStatus }>(
-      `${apiBase}/system-proxy/status`
-    )
-    if (response.success) {
-      systemProxyStatus.value = response.data
-    }
-  } catch (error) {
-    console.error('Failed to fetch system proxy status:', error)
-  }
+  await fetchProxyStatusExecute()
 }
 
 async function refreshStatus(): Promise<void> {
-  await Promise.all([fetchProxyStatus(), fetchSystemProxyStatus()])
+  await Promise.all([fetchProxyStatus()])
 }
+
+const { execute: startProxyExecute, data: startProxyData } = useApiRequest<{
+  success: boolean
+  message?: string
+}>('/proxy/start', {
+  method: 'POST',
+  immediate: false,
+  showError: false,
+})
+
+const { execute: stopProxyExecute, data: stopProxyData } = useApiRequest<{
+  success: boolean
+  message?: string
+}>('/proxy/stop', {
+  method: 'POST',
+  immediate: false,
+  showError: false,
+})
 
 async function handleProxyServerToggle(enabled: string | number | boolean): Promise<void> {
   const isEnabled = Boolean(enabled)
@@ -119,40 +113,30 @@ async function handleProxyServerToggle(enabled: string | number | boolean): Prom
 
   try {
     if (isEnabled) {
-      const response = await $fetch<{ success: boolean; message?: string }>(
-        `${apiBase}/proxy/start`,
-        {
-          method: 'POST',
-        }
-      )
-      if (response.success) {
+      await startProxyExecute()
+      const response = startProxyData.value as { success: boolean; message?: string } | null
+      if (response?.success) {
         ElMessage.success('代理服务已启动')
         await fetchProxyStatus()
       } else {
-        ElMessage.warning(response.message || '代理服务需要手动启动')
+        ElMessage.warning(response?.message || '代理服务需要手动启动')
         proxyServerRunning.value = false
         return
       }
     } else {
-      const response = await $fetch<{ success: boolean; message?: string }>(
-        `${apiBase}/proxy/stop`,
-        {
-          method: 'POST',
-        }
-      )
-      if (response.success) {
+      await stopProxyExecute()
+      const response = stopProxyData.value as { success: boolean; message?: string } | null
+      if (response?.success) {
         ElMessage.success('代理服务已停止')
         await fetchProxyStatus()
       } else {
-        ElMessage.warning(response.message || '代理服务需要手动停止')
+        ElMessage.warning(response?.message || '代理服务需要手动停止')
         proxyServerRunning.value = true
         return
       }
     }
-  } catch (error) {
-    ElMessage.error('操作失败')
+  } catch {
     proxyServerRunning.value = originalState
-    console.error(error)
   } finally {
     proxyServerLoading.value = false
   }
@@ -160,13 +144,6 @@ async function handleProxyServerToggle(enabled: string | number | boolean): Prom
 
 onMounted(async () => {
   await refreshStatus()
-  statusInterval = setInterval(refreshStatus, 5000)
-})
-
-onUnmounted(() => {
-  if (statusInterval) {
-    clearInterval(statusInterval)
-  }
 })
 </script>
 

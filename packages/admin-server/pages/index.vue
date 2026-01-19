@@ -3,7 +3,15 @@
     <el-container class="dashboard-container">
       <el-header class="dashboard__header">
         <div class="dashboard__header-content">
-          <h1 class="dashboard__title">RabyRed 🐰</h1>
+          <div class="dashboard__header-title">
+            <div class="dashboard__header-left">
+              <img src="../assets/icon.png" alt="RabyRed" class="dashboard__header-logo" />
+            </div>
+            <div class="dashboard__header-right">
+              <div class="dashboard__header-text">RabyRed</div>
+              <div class="dashboard__subtitle">一个用于http请求代理的应用</div>
+            </div>
+          </div>
           <div class="dashboard__header-actions">
             <span class="dashboard__switch-label">系统代理：</span>
             <el-switch
@@ -16,17 +24,9 @@
       </el-header>
 
       <el-main class="dashboard__main">
-        <el-row :gutter="20">
-          <el-col :span="24">
-            <ProxyStatus />
-          </el-col>
-        </el-row>
+        <ProxyStatus :system-proxy-enabled="systemProxyEnabled" />
 
-        <el-row :gutter="20" class="dashboard__rules-section">
-          <el-col :span="24">
-            <RuleManagement />
-          </el-col>
-        </el-row>
+        <RuleManagement />
       </el-main>
     </el-container>
   </div>
@@ -42,25 +42,39 @@ interface SystemProxyStatus {
   port: number
 }
 
-const config = useRuntimeConfig()
-
 const systemProxyEnabled = ref(false)
 const systemProxyLoading = ref(false)
 
-const apiBase = config.public.apiBase as string
+const { execute: fetchSystemProxyStatusExecute } = useApiRequest<{
+  success: boolean
+  data: SystemProxyStatus
+}>('/system-proxy/status', {
+  immediate: false,
+  onResponse({ response }) {
+    if (response._data?.success && response._data?.data) {
+      systemProxyEnabled.value = response._data.data.enabled
+    }
+  },
+})
 
 async function fetchSystemProxyStatus(): Promise<void> {
-  try {
-    const response = await $fetch<{ success: boolean; data: SystemProxyStatus }>(
-      `${apiBase}/system-proxy/status`
-    )
-    if (response.success) {
-      systemProxyEnabled.value = response.data.enabled
-    }
-  } catch (error) {
-    console.error('Failed to fetch system proxy status:', error)
-  }
+  await fetchSystemProxyStatusExecute()
 }
+
+const { execute: fetchProxyStatusExecute, data: proxyStatusData } = useApiRequest<{
+  success: boolean
+  data: { host: string; port: number }
+}>('/proxy/status', {
+  immediate: false,
+})
+
+const { execute: disableSystemProxyExecute } = useApiRequest<{ success: boolean }>(
+  '/system-proxy/disable',
+  {
+    method: 'POST',
+    immediate: false,
+  }
+)
 
 async function handleSystemProxyToggle(enabled: string | number | boolean): Promise<void> {
   const isEnabled = Boolean(enabled)
@@ -69,47 +83,54 @@ async function handleSystemProxyToggle(enabled: string | number | boolean): Prom
 
   try {
     // 需要获取代理服务的地址和端口
-    const proxyStatusResponse = await $fetch<{
+    await fetchProxyStatusExecute()
+    const proxyStatusResponse = proxyStatusData.value as {
       success: boolean
       data: { host: string; port: number }
-    }>(`${apiBase}/proxy/status`)
+    } | null
 
     if (isEnabled) {
-      if (!proxyStatusResponse.success || !proxyStatusResponse.data) {
+      if (!proxyStatusResponse?.success || !proxyStatusResponse.data) {
         ElMessage.warning('请先启动代理服务')
         systemProxyEnabled.value = false
         return
       }
 
-      await $fetch<{ success: boolean; data?: SystemProxyStatus }>(
-        `${apiBase}/system-proxy/enable`,
+      const { execute } = useApiRequest<{ success: boolean; data?: SystemProxyStatus }>(
+        '/system-proxy/enable',
         {
           method: 'POST',
           body: {
             host: proxyStatusResponse.data.host,
             port: proxyStatusResponse.data.port,
           },
+          immediate: false,
         }
       )
+      await execute()
       ElMessage.success('系统代理已启用')
     } else {
-      await $fetch<{ success: boolean }>(`${apiBase}/system-proxy/disable`, {
-        method: 'POST',
-      })
+      await disableSystemProxyExecute()
       ElMessage.success('系统代理已禁用')
     }
     await fetchSystemProxyStatus()
-  } catch (error) {
-    ElMessage.error('操作失败')
+  } catch {
     systemProxyEnabled.value = !isEnabled
-    console.error(error)
   } finally {
     systemProxyLoading.value = false
   }
 }
 
+let statusInterval: ReturnType<typeof setInterval> | null = null
 onMounted(async () => {
   await fetchSystemProxyStatus()
+  statusInterval = setInterval(fetchSystemProxyStatus, 60 * 1000)
+})
+
+onUnmounted(() => {
+  if (statusInterval) {
+    clearInterval(statusInterval)
+  }
 })
 </script>
 
@@ -131,11 +152,32 @@ onMounted(async () => {
   height: 100%;
 }
 
-.dashboard__title {
-  margin: 0;
-  font-size: var(--el-font-size-extra-large, 20px);
-  font-weight: 600;
-  color: var(--el-text-color-primary, #303133);
+.dashboard__header-title {
+  display: flex;
+  gap: var(--el-padding-small, 4px);
+
+  .dashboard__header-left {
+    display: flex;
+    align-items: center;
+    gap: var(--el-padding-small, 4px);
+
+    .dashboard__header-logo {
+      width: 50px;
+      height: 50px;
+    }
+  }
+
+  .dashboard__header-right {
+    display: flex;
+    flex-direction: column;
+    gap: var(--el-padding-small, 4px);
+
+    .dashboard__header-text {
+      font-size: var(--el-font-size-extra-large, 20px);
+      font-weight: 600;
+      color: var(--el-text-color-primary, #303133);
+    }
+  }
 }
 
 .dashboard__header-actions {

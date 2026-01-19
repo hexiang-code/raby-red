@@ -4,5 +4,6 @@ export default defineEventHandler(async () => {
   await systemProxyManager.unsetProxy()
   return {
     success: true,
+    data: null,
   }
 })

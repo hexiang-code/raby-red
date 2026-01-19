@@ -5,6 +5,7 @@ export default defineEventHandler(async () => {
     if (proxyServerManager.isRunning()) {
       return {
         success: true,
+        data: null,
         message: '代理服务器已经在运行中',
       }
     }
@@ -12,12 +13,14 @@ export default defineEventHandler(async () => {
     await proxyServerManager.start()
     return {
       success: true,
+      data: null,
       message: '代理服务器已启动',
     }
   } catch (error) {
     console.error('Failed to start proxy server:', error)
     return {
       success: false,
+      data: null,
       message: error instanceof Error ? error.message : '启动代理服务器失败',
     }
   }

@@ -10,7 +10,7 @@ export default defineEventHandler(async event => {
     })
   }
 
-  const deleted = ruleService.deleteRule(id)
+  const deleted = await ruleService.deleteRule(id)
 
   if (!deleted) {
     throw createError({
@@ -21,5 +21,6 @@ export default defineEventHandler(async event => {
 
   return {
     success: true,
+    data: null,
   }
 })

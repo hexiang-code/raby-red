@@ -165,6 +165,10 @@ export class RuleValidator {
         continue
       }
 
+      if (!existingRule.source) {
+        continue
+      }
+
       const normalizedExistingSource = this.normalizeUrl(existingRule.source)
 
       // 检查完全相同的源地址

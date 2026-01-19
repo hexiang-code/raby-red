@@ -1,17 +1,5 @@
-export interface ProxyRule {
-  id: string
-  source: string // 源域名或 URL
-  target: string // 目标 URL
-  enabled: boolean
-  createdAt: string
-  updatedAt: string
-}
-
-export interface SystemProxyStatus {
-  enabled: boolean
-  host: string
-  port: number
-}
+// 从共享类型定义导入
+export type { ProxyRule, SystemProxyStatus } from '../../src/types/index.js'
 
 export interface RequestStats {
   ruleId: string

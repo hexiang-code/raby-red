@@ -1,10 +1,437 @@
 [
   {
-    "source": "http://172\\.29\\.249\\.176:8001(/haic-spa-outpatient/.*)",
-    "target": "http://127.0.0.1:12002$1",
+    "id": "7003e632-1f2b-4209-8ca6-680f5dc4eac4",
+    "name": "前端代理",
+    "enabled": false,
+    "type": "group",
+    "createdAt": "2026-01-15T06:27:29.125Z",
+    "updatedAt": "2026-01-15T06:27:29.125Z",
+    "children": [
+      {
+        "id": "d4db0b05-9bb3-49d2-b4c2-09fde59ca680",
+        "name": "研发环境8003",
+        "enabled": false,
+        "type": "group",
+        "parentId": "7003e632-1f2b-4209-8ca6-680f5dc4eac4",
+        "createdAt": "2026-01-15T06:27:29.125Z",
+        "updatedAt": "2026-01-15T06:27:29.125Z",
+        "children": [
+          {
+            "id": "b6dc8f40-aca7-49ef-ad3a-0a96fb6436c9",
+            "name": "INSURANCE-PLUGINS",
+            "enabled": false,
+            "type": "rule",
+            "source": "http://172\\.29\\.249\\.176:8001(/haic-spa-insurance-plugins/.*)",
+            "target": "http://127.0.0.1:12011$1",
+            "parentId": "d4db0b05-9bb3-49d2-b4c2-09fde59ca680",
+            "createdAt": "2026-01-15T06:27:29.125Z",
+            "updatedAt": "2026-01-16T06:49:00.372Z"
+          },
+          {
+            "id": "b5b2ee27-8b3a-48cd-85b3-69de716d3a07",
+            "name": "OUTPATIENT",
+            "enabled": false,
+            "type": "rule",
+            "source": "http://172\\.29\\.249\\.176:8001(/haic-spa-outpatient/.*)",
+            "target": "http://127.0.0.1:12002$1",
+            "parentId": "d4db0b05-9bb3-49d2-b4c2-09fde59ca680",
+            "createdAt": "2026-01-15T06:27:29.125Z",
+            "updatedAt": "2026-01-15T06:27:29.125Z"
+          },
+          {
+            "id": "dfbe941f-aa33-430b-b108-a79ccdaeb7c9",
+            "name": "BOOTSTRAP",
+            "enabled": false,
+            "type": "rule",
+            "source": "http://172\\.29\\.249\\.176:8001(/haic-spa-bootstrap/.*)",
+            "target": "http://127.0.0.1:12004$1",
+            "parentId": "d4db0b05-9bb3-49d2-b4c2-09fde59ca680",
+            "createdAt": "2026-01-15T06:27:29.125Z",
+            "updatedAt": "2026-01-15T06:27:29.125Z"
+          },
+          {
+            "id": "5f1125dd-78ea-4a31-a7f5-0711cffeea78",
+            "name": "IMS",
+            "enabled": false,
+            "type": "rule",
+            "source": "http://172\\.29\\.249\\.176:8001(/haic-spa-ims/.*)",
+            "target": "http://127.0.0.1:12006$1",
+            "parentId": "d4db0b05-9bb3-49d2-b4c2-09fde59ca680",
+            "createdAt": "2026-01-15T06:27:29.125Z",
+            "updatedAt": "2026-01-15T06:27:29.125Z"
+          },
+          {
+            "id": "462efb28-474f-4ea6-b115-2d71d7ff1e9d",
+            "name": "HOSPITAL",
+            "enabled": false,
+            "type": "rule",
+            "source": "http://172\\.29\\.249\\.176:8001(/haic-spa-hospital/.*)",
+            "target": "http://127.0.0.1:12008$1",
+            "parentId": "d4db0b05-9bb3-49d2-b4c2-09fde59ca680",
+            "createdAt": "2026-01-15T06:27:29.125Z",
+            "updatedAt": "2026-01-15T06:27:29.125Z"
+          },
+          {
+            "id": "062c36ec-85ca-46c5-bc53-2f632ddc0bfd",
+            "name": "MEIDICAL-INSURANCE",
+            "enabled": false,
+            "type": "rule",
+            "source": "http://172\\.29\\.249\\.176:8001(/haic-spa-medical-insurance/.*)",
+            "target": "http://127.0.0.1:12007$1",
+            "parentId": "d4db0b05-9bb3-49d2-b4c2-09fde59ca680",
+            "createdAt": "2026-01-15T06:27:29.125Z",
+            "updatedAt": "2026-01-16T06:48:59.224Z"
+          },
+          {
+            "id": "6c7df937-7b57-48b9-91bc-888b922e65d1",
+            "name": "SETTINGS",
+            "enabled": false,
+            "type": "rule",
+            "source": "http://172\\.29\\.249\\.176:8001(/haic-spa-settings/.*)",
+            "target": "http://127.0.0.1:12003$1",
+            "parentId": "d4db0b05-9bb3-49d2-b4c2-09fde59ca680",
+            "createdAt": "2026-01-15T06:27:29.125Z",
+            "updatedAt": "2026-01-15T06:27:29.125Z"
+          }
+        ]
+      },
+      {
+        "id": "ed619372-48ce-4194-9d4a-4612ff9bfc44",
+        "name": "研发环境8002",
+        "enabled": false,
+        "type": "group",
+        "parentId": "7003e632-1f2b-4209-8ca6-680f5dc4eac4",
+        "createdAt": "2026-01-15T06:27:29.125Z",
+        "updatedAt": "2026-01-15T06:27:29.125Z",
+        "children": [
+          {
+            "id": "06e02e79-89d0-419d-9ed4-747465e948fa",
+            "name": "OUTPATIENT",
+            "enabled": false,
+            "type": "rule",
+            "source": "http://172\\.29\\.252\\.80:8001(/haic-spa-outpatient/.*)",
+            "target": "http://127.0.0.1:12002$1",
+            "parentId": "ed619372-48ce-4194-9d4a-4612ff9bfc44",
+            "createdAt": "2026-01-15T06:27:29.125Z",
+            "updatedAt": "2026-01-15T06:27:29.125Z"
+          },
+          {
+            "id": "96e4a9f4-0eb4-4724-b62c-820669eced22",
+            "name": "BASE_CHUNK",
+            "enabled": false,
+            "type": "rule",
+            "source": "http://172\\.29\\.252\\.80:8001(/haic-spa-base/.*)",
+            "target": "http://127.0.0.1:6066$1",
+            "parentId": "ed619372-48ce-4194-9d4a-4612ff9bfc44",
+            "createdAt": "2026-01-15T06:27:29.125Z",
+            "updatedAt": "2026-01-15T06:27:29.125Z"
+          },
+          {
+            "id": "adda81cc-9760-4e00-b1bc-0adc5aa7f14e",
+            "name": "IMS",
+            "enabled": false,
+            "type": "rule",
+            "source": "http://172\\.29\\.252\\.80:8001(/haic-spa-ims/.*)",
+            "target": "http://127.0.0.1:12006$1",
+            "parentId": "ed619372-48ce-4194-9d4a-4612ff9bfc44",
+            "createdAt": "2026-01-15T06:27:29.125Z",
+            "updatedAt": "2026-01-15T06:27:29.125Z"
+          },
+          {
+            "id": "8bf8480c-c128-4ebf-b64d-97f876e90d02",
+            "name": "HOSPITAL",
+            "enabled": false,
+            "type": "rule",
+            "source": "http://172\\.29\\.252\\.80:8001(/haic-spa-hospital/.*)",
+            "target": "http://127.0.0.1:12008$1",
+            "parentId": "ed619372-48ce-4194-9d4a-4612ff9bfc44",
+            "createdAt": "2026-01-15T06:27:29.125Z",
+            "updatedAt": "2026-01-15T06:27:29.125Z"
+          },
+          {
+            "id": "8f04c535-cb27-40e2-9371-a10b82831bad",
+            "name": "COMMON",
+            "enabled": false,
+            "type": "rule",
+            "source": "http://172\\.29\\.252\\.80:8001(/haic-spa-common/.*)",
+            "target": "http://127.0.0.1:12000$1",
+            "parentId": "ed619372-48ce-4194-9d4a-4612ff9bfc44",
+            "createdAt": "2026-01-15T06:27:29.125Z",
+            "updatedAt": "2026-01-15T06:27:29.125Z"
+          }
+        ]
+      },
+      {
+        "id": "b3bc34bc-037f-40c6-964e-dfadf3886670",
+        "name": "测试环境8002",
+        "enabled": false,
+        "type": "group",
+        "parentId": "7003e632-1f2b-4209-8ca6-680f5dc4eac4",
+        "createdAt": "2026-01-15T06:27:29.125Z",
+        "updatedAt": "2026-01-15T06:27:29.125Z",
+        "children": [
+          {
+            "id": "70905959-8bc4-4766-9382-67084f190a8d",
+            "name": "BOOTSTRAP",
+            "enabled": false,
+            "type": "rule",
+            "source": "http://172\\.30\\.93\\.18:8002(/haic-spa-bootstrap/.*)",
+            "target": "http://127.0.0.1:12004$1",
+            "parentId": "b3bc34bc-037f-40c6-964e-dfadf3886670",
+            "createdAt": "2026-01-15T06:27:29.125Z",
+            "updatedAt": "2026-01-15T06:27:29.125Z"
+          },
+          {
+            "id": "9a2654e8-439c-47b6-8a08-3ca297e75e40",
+            "name": "IMS",
+            "enabled": false,
+            "type": "rule",
+            "source": "http://172\\.30\\.93\\.18:8002(/haic-spa-ims/.*)",
+            "target": "http://127.0.0.1:12006$1",
+            "parentId": "b3bc34bc-037f-40c6-964e-dfadf3886670",
+            "createdAt": "2026-01-15T06:27:29.125Z",
+            "updatedAt": "2026-01-15T06:27:29.125Z"
+          },
+          {
+            "id": "8d68fd42-04a8-4786-993a-00431af157c4",
+            "name": "OUTPATIENT",
+            "enabled": false,
+            "type": "rule",
+            "source": "http://172\\.30\\.93\\.18:8002(/haic-spa-outpatient/.*)",
+            "target": "http://127.0.0.1:12002$1",
+            "parentId": "b3bc34bc-037f-40c6-964e-dfadf3886670",
+            "createdAt": "2026-01-15T06:27:29.125Z",
+            "updatedAt": "2026-01-15T06:27:29.125Z"
+          }
+        ]
+      },
+      {
+        "id": "f64fc46c-7bc2-4491-9422-9064a68c56c8",
+        "name": "研发环境8001",
+        "enabled": false,
+        "type": "group",
+        "parentId": "7003e632-1f2b-4209-8ca6-680f5dc4eac4",
+        "createdAt": "2026-01-15T06:27:29.125Z",
+        "updatedAt": "2026-01-15T06:27:29.125Z",
+        "children": [
+          {
+            "id": "9aae861c-3634-4811-b286-6f60926bb047",
+            "name": "IMS",
+            "enabled": false,
+            "type": "rule",
+            "source": "http://172\\.29\\.249\\.4:8001(/haic-spa-ims/.*)",
+            "target": "http://127.0.0.1:12006$1",
+            "parentId": "f64fc46c-7bc2-4491-9422-9064a68c56c8",
+            "createdAt": "2026-01-15T06:27:29.125Z",
+            "updatedAt": "2026-01-15T06:27:29.125Z"
+          }
+        ]
+      },
+      {
+        "id": "89f7a280-faca-4600-b9b1-f786eebe2a60",
+        "name": "多语言演示环境",
+        "enabled": false,
+        "type": "group",
+        "parentId": "7003e632-1f2b-4209-8ca6-680f5dc4eac4",
+        "createdAt": "2026-01-15T06:27:29.125Z",
+        "updatedAt": "2026-01-15T06:27:29.125Z",
+        "children": [
+          {
+            "id": "937da923-5095-4efd-8389-41804ca92736",
+            "name": "OUTPATIENT",
+            "enabled": false,
+            "type": "rule",
+            "source": "https://zyzl5yst\\.xfzyzl\\.com(/haic-spa-outpatient/.*)",
+            "target": "http://127.0.0.1:12002$1",
+            "parentId": "89f7a280-faca-4600-b9b1-f786eebe2a60",
+            "createdAt": "2026-01-15T06:27:29.125Z",
+            "updatedAt": "2026-01-15T06:27:29.125Z"
+          }
+        ]
+      },
+      {
+        "id": "9e49241c-eb5c-4fb7-901b-d73405ff71fd",
+        "name": "测试环境 dev3",
+        "enabled": false,
+        "type": "group",
+        "parentId": "7003e632-1f2b-4209-8ca6-680f5dc4eac4",
+        "createdAt": "2026-01-15T06:27:29.125Z",
+        "updatedAt": "2026-01-15T06:27:29.125Z",
+        "children": [
+          {
+            "id": "72d4abe3-bb00-4683-82fd-46af57fb29c9",
+            "name": "INSURANCE-PLUGINS",
+            "enabled": false,
+            "type": "rule",
+            "source": "http://172\\.29\\.253\\.202:8001(/haic-spa-insurance-plugins/.*)",
+            "target": "http://127.0.0.1:12011$1",
+            "parentId": "9e49241c-eb5c-4fb7-901b-d73405ff71fd",
+            "createdAt": "2026-01-15T06:27:29.125Z",
+            "updatedAt": "2026-01-15T06:27:29.125Z"
+          },
+          {
+            "id": "71004170-f76b-471e-aa64-10258064ffa8",
+            "name": "MEIDICAL-INSURANCE",
+            "enabled": false,
+            "type": "rule",
+            "source": "http://172\\.29\\.253\\.202:8001(/haic-spa-medical-insurance/.*)",
+            "target": "http://127.0.0.1:12007$1",
+            "parentId": "9e49241c-eb5c-4fb7-901b-d73405ff71fd",
+            "createdAt": "2026-01-15T06:27:29.125Z",
+            "updatedAt": "2026-01-15T06:27:29.125Z"
+          }
+        ]
+      },
+      {
+        "id": "e90bd939-5999-4b6d-b489-f57f4c36bdf8",
+        "name": "测试环境dev2",
+        "enabled": false,
+        "type": "group",
+        "parentId": "7003e632-1f2b-4209-8ca6-680f5dc4eac4",
+        "createdAt": "2026-01-15T06:27:29.125Z",
+        "updatedAt": "2026-01-15T06:27:29.125Z",
+        "children": [
+          {
+            "id": "da7665ac-ccf3-4857-bd93-7d2cdd25f258",
+            "name": "INSURANCE-PLUGINS",
+            "enabled": false,
+            "type": "rule",
+            "source": "http://172\\.29\\.253\\.155:8001(/haic-spa-insurance-plugins/.*)",
+            "target": "http://127.0.0.1:12011$1",
+            "parentId": "e90bd939-5999-4b6d-b489-f57f4c36bdf8",
+            "createdAt": "2026-01-15T06:27:29.125Z",
+            "updatedAt": "2026-01-15T06:27:29.125Z"
+          },
+          {
+            "id": "a1fdecfa-1af1-499d-b1b3-34540c1c19d4",
+            "name": "MEIDICAL-INSURANCE",
+            "enabled": false,
+            "type": "rule",
+            "source": "http://172\\.29\\.253\\.155:8001(/haic-spa-medical-insurance/.*)",
+            "target": "http://127.0.0.1:12007$1",
+            "parentId": "e90bd939-5999-4b6d-b489-f57f4c36bdf8",
+            "createdAt": "2026-01-15T06:27:29.125Z",
+            "updatedAt": "2026-01-15T06:27:29.125Z"
+          }
+        ]
+      },
+      {
+        "id": "9540eb21-8167-44cf-ac94-e73627d09ea2",
+        "name": "研发环境dev5",
+        "enabled": false,
+        "type": "group",
+        "parentId": "7003e632-1f2b-4209-8ca6-680f5dc4eac4",
+        "createdAt": "2026-01-15T06:27:29.125Z",
+        "updatedAt": "2026-01-15T06:27:29.125Z",
+        "children": [
+          {
+            "id": "52f6fd00-08e6-4276-97e1-7487e0e42a72",
+            "name": "MEDICAL_ISNURANCE",
+            "enabled": false,
+            "type": "rule",
+            "source": "http://172\\.29\\.196\\.79:8001(/haic-spa-medical-insurance/.*)",
+            "target": "http://127.0.0.1:12007$1",
+            "parentId": "9540eb21-8167-44cf-ac94-e73627d09ea2",
+            "createdAt": "2026-01-15T06:27:29.125Z",
+            "updatedAt": "2026-01-15T06:27:29.125Z"
+          },
+          {
+            "id": "a7bc888c-2c4c-4479-a1e0-1ded0aaf1a12",
+            "name": "MEDICAL_PLUGINS",
+            "enabled": false,
+            "type": "rule",
+            "source": "http://172\\.29\\.196\\.79:8001(/haic-spa-insurance-plugins/.*)",
+            "target": "http://127.0.0.1:12011$1",
+            "parentId": "9540eb21-8167-44cf-ac94-e73627d09ea2",
+            "createdAt": "2026-01-15T06:27:29.125Z",
+            "updatedAt": "2026-01-15T06:27:29.125Z"
+          },
+          {
+            "id": "9296e28b-f9ac-4db4-948a-c4e8f57b4a79",
+            "name": "OUTPATIENT",
+            "enabled": true,
+            "type": "rule",
+            "source": "http://172\\.29\\.200\\.241:8001(/haic-spa-outpatient/.*)",
+            "target": "http://127.0.0.1:12002$1",
+            "parentId": "9540eb21-8167-44cf-ac94-e73627d09ea2",
+            "createdAt": "2026-01-15T06:27:29.125Z",
+            "updatedAt": "2026-01-15T06:27:29.125Z"
+          }
+        ]
+      },
+      {
+        "id": "0c090d7a-40f7-439a-944b-9f48fdf640e7",
+        "name": "测试环境dev1",
+        "enabled": false,
+        "type": "group",
+        "parentId": "7003e632-1f2b-4209-8ca6-680f5dc4eac4",
+        "createdAt": "2026-01-15T06:27:29.125Z",
+        "updatedAt": "2026-01-15T06:27:29.125Z",
+        "children": [
+          {
+            "id": "a6d7e041-4b64-4a60-8d42-3e5dfb03f3d3",
+            "name": "OUTPATIENT",
+            "enabled": false,
+            "type": "rule",
+            "source": "http://172\\.29\\.253\\.154:8001(/haic-spa-outpatient/.*)",
+            "target": "http://127.0.0.1:12002$1",
+            "parentId": "0c090d7a-40f7-439a-944b-9f48fdf640e7",
+            "createdAt": "2026-01-15T06:27:29.125Z",
+            "updatedAt": "2026-01-15T06:27:29.125Z"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "7bc4ec6b-6813-46ea-a949-ef64931da334",
+    "name": "后端代理",
+    "enabled": false,
+    "type": "group",
+    "createdAt": "2026-01-15T06:27:29.125Z",
+    "updatedAt": "2026-01-15T06:27:29.125Z",
+    "children": [
+      {
+        "id": "aff35a6b-d4c4-4c22-86ea-1e16d740e77e",
+        "name": "sxhe2",
+        "enabled": false,
+        "type": "rule",
+        "source": "http://172\\.30\\.12\\.205:8002(/gateway/haic-c-clinical/.*)",
+        "target": "http://172.30.12.205:8002$1",
+        "parentId": "7bc4ec6b-6813-46ea-a949-ef64931da334",
+        "createdAt": "2026-01-15T06:27:29.125Z",
+        "updatedAt": "2026-01-15T06:27:29.125Z"
+      },
+      {
+        "id": "60b329f1-2173-44e8-9e47-8718204c7b7d",
+        "name": "yuyang17",
+        "enabled": false,
+        "type": "rule",
+        "source": "http://172\\.29\\.249\\.176:8001(/gateway/haic-c-insurance/.*)",
+        "target": "http://172.29.249.176:8001$1",
+        "parentId": "7bc4ec6b-6813-46ea-a949-ef64931da334",
+        "createdAt": "2026-01-15T06:27:29.125Z",
+        "updatedAt": "2026-01-15T06:27:29.125Z"
+      },
+      {
+        "id": "86ab0532-0dba-434b-8d69-e0b64328ce1f",
+        "name": "yuyang17 -basic",
+        "enabled": false,
+        "type": "rule",
+        "source": "http://172\\.29\\.249\\.176:8001(/gateway/haic-c-basic/.*)",
+        "target": "http://172.29.249.176:8001$1",
+        "parentId": "7bc4ec6b-6813-46ea-a949-ef64931da334",
+        "createdAt": "2026-01-15T06:27:29.125Z",
+        "updatedAt": "2026-01-15T06:27:29.125Z"
+      }
+    ]
+  },
+  {
+    "type": "group",
     "enabled": true,
-    "id": "1767076546836-rvbiwrx",
-    "createdAt": "2025-12-30T06:35:46.836Z",
-    "updatedAt": "2025-12-30T06:35:46.836Z"
+    "name": "测试分组",
+    "id": "1768547827925-ceiy0f3",
+    "createdAt": "2026-01-16T07:17:07.926Z",
+    "updatedAt": "2026-01-16T07:17:07.926Z"
   }
 ]

@@ -13,7 +13,7 @@ export default defineEventHandler(async event => {
   }
 
   try {
-    const rule = ruleService.updateRule(id, body)
+    const rule = await ruleService.updateRule(id, body)
 
     if (!rule) {
       throw createError({
